@@ -7,11 +7,11 @@ import org.springframework.stereotype.Component;
 
 @Component
 //@ConfigurationPropertiesBinding
-public class ProjectDtoConverter implements Converter<String, ProjectDTO> {
+public class ProjectDtoConverter {
 
-    ProjectService projectService;
+   // ProjectService projectService;
 
-    public ProjectDtoConverter(ProjectService projectService) {
+  /*  //public ProjectDtoConverter(ProjectService projectService) {
         this.projectService = projectService;
     }
 
@@ -22,8 +22,8 @@ public class ProjectDtoConverter implements Converter<String, ProjectDTO> {
             return null;
         }
 
-        return projectService.findById(source);
+        return projectService.findById(source);*/
 
     }
 
-}
+
