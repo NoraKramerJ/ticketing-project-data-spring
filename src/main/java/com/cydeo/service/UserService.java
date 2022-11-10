@@ -16,4 +16,5 @@ public interface UserService {
  //created new method delete to save the object in the db and to only delete on the UI part
  void delete(String userName);
 
+    List<UserDTO> listAllByRole(String role);
 }
