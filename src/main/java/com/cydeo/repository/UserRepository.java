@@ -10,7 +10,7 @@ public interface UserRepository extends JpaRepository<User,Long> {
     User findByUserName(String userName);
    @Transactional
    // used @Transactional with derived queries
-   //@Modifying and @Transactional used with JPQL and native queries
+   //@Modifying  used with JPQL and native queries
    void deleteByUserName(String userName);
 
 }
