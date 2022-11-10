@@ -12,6 +12,8 @@ public interface UserService {
  void save(UserDTO user);
  void deleteByUserName( String userName);
  UserDTO update(UserDTO user);
+
+ //created new method delete to save the object in the db and to only delete on the UI part
  void delete(String userName);
 
 }
