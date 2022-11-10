@@ -16,6 +16,8 @@ import java.time.LocalDateTime;
 @Entity
 @Table(name="users")
 @Where(clause="is_deleted=false")
+//adding the clause @where to manage any repository which is using user entity(User repository in this case)
+// whatever query inside, will add it automatically to each method
 public class User extends BaseEntity {
 
     private String firstName;

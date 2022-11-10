@@ -6,10 +6,10 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 
 @SpringBootApplication // this includes @Configuration
-public class TicketingProjectDataApplication {
+public class TicketingProjectDataApp {
 
     public static void main(String[] args) {
-        SpringApplication.run(TicketingProjectDataApplication.class, args);
+        SpringApplication.run(TicketingProjectDataApp.class, args);
     }
     @Bean
     public ModelMapper mapper() {
