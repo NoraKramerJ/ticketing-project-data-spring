@@ -2,6 +2,8 @@ package com.cydeo.controller;
 
 import com.cydeo.dto.TaskDTO;
 import com.cydeo.enums.Status;
+import com.cydeo.service.ProjectService;
+import com.cydeo.service.TaskService;
 import com.cydeo.service.UserService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -14,8 +16,8 @@ import javax.validation.Valid;
 @RequestMapping("/task")
 public class TaskController {
 
-    //private final UserService userService;
-   /* private final ProjectService projectService;
+  private final UserService userService;
+   private final ProjectService projectService;
     private final TaskService taskService;
 
     public TaskController(UserService userService, ProjectService projectService, TaskService taskService) {
@@ -28,9 +30,9 @@ public class TaskController {
     public String createTask(Model model) {
 
         model.addAttribute("task", new TaskDTO());
-        model.addAttribute("projects", projectService.findAll());
-        model.addAttribute("employees", userService.findEmployees());
-        model.addAttribute("tasks", taskService.findAll());
+        model.addAttribute("projects", projectService.listAllProject());
+        model.addAttribute("employees", userService.listAllByRole("employee"));
+        model.addAttribute("tasks", taskService.listAllTasks());
 
         return "/task/create";
 
@@ -41,9 +43,9 @@ public class TaskController {
 
         if (bindingResult.hasErrors()) {
 
-            model.addAttribute("projects", projectService.findAll());
-            model.addAttribute("employees", userService.findEmployees());
-            model.addAttribute("tasks", taskService.findAll());
+            model.addAttribute("projects", projectService.listAllProject());
+            model.addAttribute("employees", userService.listAllByRole("employee"));
+            model.addAttribute("tasks", taskService.listAllTasks());
 
             return "/task/create";
 
@@ -57,7 +59,7 @@ public class TaskController {
 
     @GetMapping("/delete/{id}")
     public String deleteTask(@PathVariable("id") Long id) {
-        taskService.deleteById(id);
+        taskService.delete(id);
         return "redirect:/task/create";
     }
 
