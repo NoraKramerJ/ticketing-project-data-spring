@@ -67,9 +67,9 @@ public class TaskController {
     public String editTask(@PathVariable("taskId") Long taskId, Model model) {
 
         model.addAttribute("task", taskService.findById(taskId));
-        model.addAttribute("projects", projectService.findAll());
-        model.addAttribute("employees", userService.findEmployees());
-        model.addAttribute("tasks", taskService.findAll());
+        model.addAttribute("projects", projectService.listAllProject());
+        model.addAttribute("employees", userService.listAllByRole("employee"));
+        model.addAttribute("tasks", taskService.listAllTasks());
 
         return "/task/update";
 
@@ -90,9 +90,9 @@ public class TaskController {
 
         if (bindingResult.hasErrors()) {
 
-            model.addAttribute("projects", projectService.findAll());
-            model.addAttribute("employees", userService.findEmployees());
-            model.addAttribute("tasks", taskService.findAll());
+            model.addAttribute("projects", projectService.listAllProject());
+            model.addAttribute("employees", userService.listAllByRole("employee"));
+            model.addAttribute("tasks", taskService.listAllTasks());
 
             return "/task/update";
 

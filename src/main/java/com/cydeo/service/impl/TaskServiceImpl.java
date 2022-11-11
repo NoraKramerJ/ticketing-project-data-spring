@@ -44,8 +44,14 @@ taskRepository.save(taskMapper.convertToEntity(dto));
     }
 
     @Override
-    public TaskDTO update(TaskDTO dto) {
-        return null;
+    public void update(TaskDTO dto) {
+        Optional<Task> task = taskRepository.findById(dto.getId());
+        Task convertedTask = taskMapper.convertToEntity(dto);
+        if (task.isPresent()) {
+            convertedTask.setTaskStatus(task.get().getTaskStatus());
+            convertedTask.setAssignedDate(task.get().getAssignedDate());
+            taskRepository.save(convertedTask);
+        }
     }
 
     @Override
@@ -60,6 +66,10 @@ taskRepository.save(taskMapper.convertToEntity(dto));
 
     @Override
     public TaskDTO findById(Long id) {
-        return null;
+       Optional<Task> task=taskRepository.findById(id);
+       if(task.isPresent()){
+           return taskMapper.convertToDto(task.get());
+       }
+       return null;
     }
 }
