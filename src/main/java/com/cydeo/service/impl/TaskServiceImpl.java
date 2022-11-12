@@ -72,4 +72,14 @@ taskRepository.save(taskMapper.convertToEntity(dto));
        }
        return null;
     }
+
+    @Override
+    public int totalNonCompletedTask(String projectCode) {
+        return taskRepository.totalNonCompletedTask(projectCode);
+    }
+
+    @Override
+    public int totalCompletedTask(String projectCode) {
+        return taskRepository.totalCompletedTasks(projectCode);
+    }
 }
