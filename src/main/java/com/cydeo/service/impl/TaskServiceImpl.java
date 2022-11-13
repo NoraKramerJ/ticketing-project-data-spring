@@ -51,7 +51,8 @@ taskRepository.save(taskMapper.convertToEntity(dto));
         Optional<Task> task = taskRepository.findById(dto.getId());
         Task convertedTask = taskMapper.convertToEntity(dto);
         if (task.isPresent()) {
-            convertedTask.setTaskStatus(task.get().getTaskStatus());
+            //if task is null, get it from db, if there is a status, get the one from the UI
+            convertedTask.setTaskStatus(dto.getTaskStatus()==null ? task.get().getTaskStatus() : dto.getTaskStatus());
             convertedTask.setAssignedDate(task.get().getAssignedDate());
             taskRepository.save(convertedTask);
         }
@@ -91,5 +92,15 @@ taskRepository.save(taskMapper.convertToEntity(dto));
         Project project=projectMapper.convertToEntity(projectDTO);
         List<Task> tasks=taskRepository.findAllByProject(project);
         tasks.forEach(task -> delete(task.getId()));
+    }
+
+    @Override
+    public void completeByProject(ProjectDTO projectDTO) {
+        Project project=projectMapper.convertToEntity(projectDTO);
+        List<Task> tasks=taskRepository.findAllByProject(project);
+        tasks.stream().map(taskMapper::convertToDto).forEach(taskDTO -> {
+            taskDTO.setTaskStatus(Status.COMPLETE);
+            update(taskDTO);
+        });
     }
 }
