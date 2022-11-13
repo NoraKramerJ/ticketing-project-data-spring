@@ -47,10 +47,12 @@ public class UserServiceImpl implements UserService {
         userRepository.save(userMapper.convertToEntity(user));
     }
 
-    @Override
+  /*   this method is for hard deletion and we are not using it here, we are only doing soft delete
+  @Override
     public void deleteByUserName(String userName) {
+
       userRepository.deleteByUserName(userName);
-    }
+    }*/
 
     @Override
     public UserDTO update(UserDTO user) {

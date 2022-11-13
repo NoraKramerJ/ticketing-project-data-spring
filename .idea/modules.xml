@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/ticketing-project-data.iml" filepath="$PROJECT_DIR$/ticketing-project-data.iml" />
+      <module fileurl="file://$PROJECT_DIR$/ticketing-project-data-spring.iml" filepath="$PROJECT_DIR$/ticketing-project-data-spring.iml" />
     </modules>
   </component>
 </project>

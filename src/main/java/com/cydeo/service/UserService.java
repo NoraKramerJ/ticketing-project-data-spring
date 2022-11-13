@@ -10,7 +10,7 @@ public interface UserService {
 
  UserDTO findByUserName( String userName);
  void save(UserDTO user);
- void deleteByUserName( String userName);
+ //void deleteByUserName( String userName);
  UserDTO update(UserDTO user);
 
  //created new method delete to save the object in the db and to only delete on the UI part
