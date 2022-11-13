@@ -23,9 +23,10 @@ public class ProjectServiceImpl implements ProjectService {
 
     private final ProjectRepository projectRepository;
     private final ProjectMapper projectMapper;
-private final UserService userservice;
-private final UserMapper userMapper;
-private final TaskService taskService;
+    private final UserService userservice;
+    private final UserMapper userMapper;
+    private final TaskService taskService;
+
     public ProjectServiceImpl(ProjectRepository projectRepository, ProjectMapper projectMapper, UserService userservice, UserMapper userMapper, TaskService taskService) {
         this.projectRepository = projectRepository;
         this.projectMapper = projectMapper;
@@ -37,15 +38,15 @@ private final TaskService taskService;
     @Override
     public ProjectDTO getByProjectCode(String code) {
 
-     Project project=   projectRepository.findByProjectCode(code);
-   return  projectMapper.convertToDto(project);
+        Project project = projectRepository.findByProjectCode(code);
+        return projectMapper.convertToDto(project);
 
     }
 
     @Override
     public List<ProjectDTO> listAllProject() {
 
-        List<Project> ProjectList=projectRepository.findAll(Sort.by("projectCode"));
+        List<Project> ProjectList = projectRepository.findAll(Sort.by("projectCode"));
         return ProjectList.stream().map(projectMapper::convertToDto).collect(Collectors.toList());
 
     }
@@ -53,7 +54,7 @@ private final TaskService taskService;
     @Override
     public void save(ProjectDTO dto) {
         dto.setProjectStatus(Status.OPEN);
-       projectRepository.save(projectMapper.convertToEntity(dto));
+        projectRepository.save(projectMapper.convertToEntity(dto));
     }
 
     @Override
@@ -72,12 +73,12 @@ private final TaskService taskService;
 
     @Override
     public void delete(String code) {
-        Project project= projectRepository.findByProjectCode(code);
+        Project project = projectRepository.findByProjectCode(code);
         project.setDeleted(true);
 
         //This line of coding is used so the deleted project code can be reused
         // since we will change the code of the project before deleting it
-        project.setProjectCode(project.getProjectCode() + "-"+ project.getId()); //   SPOO-1
+        project.setProjectCode(project.getProjectCode() + "-" + project.getId()); //   SPOO-1
         projectRepository.save(project);
         taskService.deleteByProject(projectMapper.convertToDto(project));
     }
@@ -85,7 +86,7 @@ private final TaskService taskService;
     @Override
     public void complete(String projectCode) {
 
-        Project project=projectRepository.findByProjectCode(projectCode);
+        Project project = projectRepository.findByProjectCode(projectCode);
         project.setProjectStatus(Status.COMPLETE);
         projectRepository.save(project);
 
@@ -109,4 +110,12 @@ private final TaskService taskService;
             return obj;
         }).collect(Collectors.toList());
     }
+
+    @Override
+    public List<ProjectDTO> listAllNonCompletedByAssignedManager(UserDTO assignedManager) {
+        List<Project> projects = projectRepository.
+                findAllByProjectStatusIsNotAndAssignedManager(Status.COMPLETE, userMapper.convertToEntity(assignedManager));
+        return projects.stream().map(projectMapper::convertToDto).collect(Collectors.toList());
+    }
+
 }
