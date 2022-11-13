@@ -74,7 +74,12 @@ private final TaskService taskService;
     public void delete(String code) {
         Project project= projectRepository.findByProjectCode(code);
         project.setDeleted(true);
+
+        //This line of coding is used so the deleted project code can be reused
+        // since we will change the code of the project before deleting it
+        project.setProjectCode(project.getProjectCode() + "-"+ project.getId()); //   SPOO-1
         projectRepository.save(project);
+        taskService.deleteByProject(projectMapper.convertToDto(project));
     }
 
     @Override
@@ -83,6 +88,8 @@ private final TaskService taskService;
         Project project=projectRepository.findByProjectCode(projectCode);
         project.setProjectStatus(Status.COMPLETE);
         projectRepository.save(project);
+
+        taskService.completeByProject(projectMapper.convertToDto(project));
     }
 
     @Override
