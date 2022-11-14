@@ -16,8 +16,8 @@ import javax.validation.Valid;
 @RequestMapping("/task")
 public class TaskController {
 
-  private final UserService userService;
-   private final ProjectService projectService;
+    private final UserService userService;
+    private final ProjectService projectService;
     private final TaskService taskService;
 
     public TaskController(UserService userService, ProjectService projectService, TaskService taskService) {
@@ -30,7 +30,7 @@ public class TaskController {
     public String createTask(Model model) {
 
         model.addAttribute("task", new TaskDTO());
-        model.addAttribute("projects", projectService.listAllProject());
+        model.addAttribute("projects", projectService.listAllProjects());
         model.addAttribute("employees", userService.listAllByRole("employee"));
         model.addAttribute("tasks", taskService.listAllTasks());
 
@@ -43,7 +43,7 @@ public class TaskController {
 
         if (bindingResult.hasErrors()) {
 
-            model.addAttribute("projects", projectService.listAllProject());
+            model.addAttribute("projects", projectService.listAllProjects());
             model.addAttribute("employees", userService.listAllByRole("employee"));
             model.addAttribute("tasks", taskService.listAllTasks());
 
@@ -67,7 +67,7 @@ public class TaskController {
     public String editTask(@PathVariable("taskId") Long taskId, Model model) {
 
         model.addAttribute("task", taskService.findById(taskId));
-        model.addAttribute("projects", projectService.listAllProject());
+        model.addAttribute("projects", projectService.listAllProjects());
         model.addAttribute("employees", userService.listAllByRole("employee"));
         model.addAttribute("tasks", taskService.listAllTasks());
 
@@ -75,14 +75,12 @@ public class TaskController {
 
     }
 
-
-
     @PostMapping("/update/{id}")
     public String updateTask(@Valid @ModelAttribute("task") TaskDTO task, BindingResult bindingResult, Model model) {
 
         if (bindingResult.hasErrors()) {
 
-            model.addAttribute("projects", projectService.listAllProject());
+            model.addAttribute("projects", projectService.listAllProjects());
             model.addAttribute("employees", userService.listAllByRole("employee"));
             model.addAttribute("tasks", taskService.listAllTasks());
 
@@ -112,7 +110,6 @@ public class TaskController {
     public String employeeEditTask(@PathVariable Long id, Model model) {
 
         model.addAttribute("task", taskService.findById(id));
-
         model.addAttribute("statuses", Status.values());
         model.addAttribute("tasks", taskService.listAllTasksByStatusIsNot(Status.COMPLETE));
 
