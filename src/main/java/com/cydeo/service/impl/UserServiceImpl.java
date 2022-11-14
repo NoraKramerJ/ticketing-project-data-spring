@@ -32,13 +32,13 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public List<UserDTO> listAllUsers() {
-      List<User> userList=userRepository.findAll(Sort.by("firstName"));
+      List<User> userList=userRepository.findAllByIsDeletedOrderByFirstNameDesc(false);
         return userList.stream().map(userMapper::convertToDto).collect(Collectors.toList());
     }
 
     @Override
     public UserDTO findByUserName(String userName) {
-        return userMapper.convertToDto(userRepository.findByUserName(userName));
+        return userMapper.convertToDto(userRepository.findByUserNameAndIsDeleted(userName,false));
     }
 
     @Override
@@ -57,7 +57,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserDTO update(UserDTO user) {
       // find the current user to get the id first to assign it to the updated one
-        User user1=userRepository.findByUserName(user.getUserName());// has id
+        User user1=userRepository.findByUserNameAndIsDeleted(user.getUserName(),false);// has id
         // Map update user dto to entity object
         User convertedUser=userMapper.convertToEntity(user); // no id
 
@@ -75,7 +75,7 @@ public class UserServiceImpl implements UserService {
         //go to db and get that user with userName
         //change the isDeleted field to true
         // then save the object to db
-       User user= userRepository.findByUserName(userName);
+       User user= userRepository.findByUserNameAndIsDeleted(userName,false);
        if(checkIfUserCanBeDeleted(user)){
            user.setDeleted(true);
            userRepository.save(user);
@@ -87,7 +87,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public List<UserDTO> listAllByRole(String role) {
 
-     List<User> users=  userRepository.findByRoleDescriptionIgnoreCase(role);
+     List<User> users=  userRepository.findByRoleDescriptionIgnoreCaseAndIsDeleted(role,false);
 
         return users.stream().map(userMapper::convertToDto).collect(Collectors.toList());
     }
